@@ -11,7 +11,7 @@ import java.util.List;
 
 // possui o mesmo princípio de funcionamento do UniqueValue
 // a saída, entretanto, é contrária. Queremos que exista um valor (Id) em uso.
-public class CategoriaMaeValidator implements ConstraintValidator<CategoriaMae, Object> {
+public class CheckIdExistenceValidator implements ConstraintValidator<CheckIdExistence, Object> {
 
     private String domainAttribute;
     private Class<?> klass;
@@ -24,15 +24,19 @@ public class CategoriaMaeValidator implements ConstraintValidator<CategoriaMae, 
 
 
     @Override // instancia o objeto de validação
-    public void initialize(CategoriaMae toValidate) {}
+    public void initialize(CheckIdExistence toValidate) {
+        this.domainAttribute = toValidate.fieldName();
+        this.klass = toValidate.domainClass();
+
+    }
 
     @Override // faz uma query a partir dos parâmetros recebidos
-    public boolean isValid(Object value, ConstraintValidatorContext validatorContext) {
+    public boolean isValid(Object idAValidar, ConstraintValidatorContext validatorContext) {
 
-        if (value != null) {
-            Query query = entityManager.createQuery("select c from Categoria c " +
-                    "where id = :categoriaMae");
-            query.setParameter("categoriaMae", value);
+        if (idAValidar != null) {
+            Query query = entityManager.createQuery("select x from " + klass +
+                    " x where " + domainAttribute + " = :idParam");
+            query.setParameter("idParam", idAValidar);
             List<?> list = query.getResultList();
             Assert.state(list.size() <= 1, "Foi encontrada mais de uma categoria com " +
                     "o ID = :categoriaMae");

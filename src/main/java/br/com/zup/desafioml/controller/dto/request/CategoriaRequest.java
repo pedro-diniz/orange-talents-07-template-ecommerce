@@ -1,6 +1,6 @@
-package br.com.zup.desafioml.dto.request;
+package br.com.zup.desafioml.controller.dto.request;
 
-import br.com.zup.desafioml.config.validation.CategoriaMae;
+import br.com.zup.desafioml.config.validation.CheckIdExistence;
 import br.com.zup.desafioml.config.validation.UniqueValue;
 import br.com.zup.desafioml.model.Categoria;
 
@@ -12,7 +12,7 @@ public class CategoriaRequest {
     @UniqueValue(domainClass = Categoria.class, fieldName = "nome")
     private String nome;
 
-    @CategoriaMae
+    @CheckIdExistence(domainClass = Categoria.class, fieldName = "id")
     private Long idCategoriaMae;
 
     public String getNome() {

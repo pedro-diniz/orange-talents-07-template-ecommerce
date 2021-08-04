@@ -1,14 +1,14 @@
-package br.com.zup.desafioml.dto.request;
+package br.com.zup.desafioml.controller.dto.request;
 
-import br.com.zup.desafioml.config.validation.UniqueValue;
 import br.com.zup.desafioml.model.Usuario;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class UsuarioRequest {
+public class LoginRequest {
 
-    @UniqueValue(domainClass = Usuario.class, fieldName = "login")
     @NotBlank
     @Email
     private String login;
@@ -28,4 +28,9 @@ public class UsuarioRequest {
     public String getSenhaLimpa() {
         return senhaLimpa;
     }
+
+    public UsernamePasswordAuthenticationToken converterParaUPAT() {
+        return new UsernamePasswordAuthenticationToken(login, senhaLimpa);
+    }
+
 }

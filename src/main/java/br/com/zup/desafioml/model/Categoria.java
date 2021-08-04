@@ -14,7 +14,7 @@ public class Categoria {
     @Column(unique = true)
     private String nome;
 
-    @OneToOne
+    @ManyToOne // uma categoriaMae pode ter muitos filhos
     private Categoria categoriaMae;
 
     public Categoria() {

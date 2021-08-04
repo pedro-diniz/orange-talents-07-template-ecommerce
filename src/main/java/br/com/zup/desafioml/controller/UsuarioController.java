@@ -1,6 +1,6 @@
 package br.com.zup.desafioml.controller;
 
-import br.com.zup.desafioml.dto.request.UsuarioRequest;
+import br.com.zup.desafioml.controller.dto.request.UsuarioRequest;
 import br.com.zup.desafioml.model.Usuario;
 import br.com.zup.desafioml.repository.UsuarioRepository;
 import org.springframework.http.ResponseEntity;
