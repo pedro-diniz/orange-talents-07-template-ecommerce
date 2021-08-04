@@ -28,6 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 // libera as POST requests em /usuarios
                 .antMatchers(HttpMethod.POST, "/usuarios").permitAll()
+                .antMatchers(HttpMethod.POST, "/categorias").permitAll()
                 .and().csrf().disable(); // precisa ser desabilitado para acesso sem autenticação
     }
 
