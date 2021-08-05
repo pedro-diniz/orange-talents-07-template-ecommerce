@@ -32,14 +32,13 @@ public class CheckIdExistenceValidator implements ConstraintValidator<CheckIdExi
 
     @Override // faz uma query a partir dos parâmetros recebidos
     public boolean isValid(Object idAValidar, ConstraintValidatorContext validatorContext) {
-
         if (idAValidar != null) {
-            Query query = entityManager.createQuery("select x from " + klass +
+            Query query = entityManager.createQuery("select x from " + klass.getName() +
                     " x where " + domainAttribute + " = :idParam");
             query.setParameter("idParam", idAValidar);
             List<?> list = query.getResultList();
-            Assert.state(list.size() <= 1, "Foi encontrada mais de uma categoria com " +
-                    "o ID = :categoriaMae");
+            Assert.state(list.size() <= 1, "Foi encontrada mais de uma correspondência " +
+                    "para esse ID");
             return !list.isEmpty();
         }
         return true;
