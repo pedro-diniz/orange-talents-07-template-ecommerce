@@ -1,5 +1,7 @@
 package br.com.zup.desafioml.model;
 
+import br.com.zup.desafioml.controller.dto.response.CaracteristicaProdutoResponse;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
@@ -39,5 +41,17 @@ public class CaracteristicaProduto {
     public CaracteristicaProduto(String nome, String descricao) {
         this.nome = nome;
         this.descricao = descricao;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public CaracteristicaProdutoResponse toOutput() {
+        return new CaracteristicaProdutoResponse(nome, descricao);
     }
 }

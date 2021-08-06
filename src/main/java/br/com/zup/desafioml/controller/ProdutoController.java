@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/produtos")
@@ -28,6 +29,20 @@ public class ProdutoController {
         produtoRepository.save(produto);
 
         return ResponseEntity.ok().build();
+
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> detalhar(@PathVariable Long id) {
+
+        Optional<Produto> produto = produtoRepository.findById(id);
+
+        if (produto.isPresent()) {
+            return ResponseEntity.ok(produto.get().toOutput());
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
 
     }
 

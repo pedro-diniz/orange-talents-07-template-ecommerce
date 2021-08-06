@@ -5,7 +5,6 @@ import br.com.zup.desafioml.controller.util.EmailSender;
 import br.com.zup.desafioml.controller.util.FakeEmailSender;
 import br.com.zup.desafioml.model.PerguntaProduto;
 import br.com.zup.desafioml.model.Produto;
-import br.com.zup.desafioml.model.Usuario;
 import br.com.zup.desafioml.repository.ProdutoRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

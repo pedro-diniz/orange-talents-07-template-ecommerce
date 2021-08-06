@@ -1,5 +1,6 @@
 package br.com.zup.desafioml.model;
 
+import br.com.zup.desafioml.controller.dto.response.*;
 import org.springframework.security.core.Authentication;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Produto {
@@ -98,5 +100,51 @@ public class Produto {
 
     public String getNome() {
         return nome;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public Set<CaracteristicaProduto> getCaracteristicas() {
+        return caracteristicas;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public Set<ImagemProduto> getImagens() {
+        return imagens;
+    }
+
+    public Set<OpiniaoProduto> getOpinioes() {
+        return opinioes;
+    }
+
+    public Set<PerguntaProduto> getPerguntas() {
+        return perguntas;
+     }
+
+    public ProdutoResponse toOutput() {
+        return new ProdutoResponse(
+                nome,
+                valor,
+                quantidade,
+                caracteristicas.stream().map(caracteristica -> caracteristica.toOutput()).collect(Collectors.toSet()),
+                descricao,
+                categoria,
+                imagens.stream().map(imagem -> imagem.toOutput()).collect(Collectors.toSet()),
+                opinioes.stream().map(opiniao -> opiniao.toOutput()).collect(Collectors.toSet()),
+                perguntas.stream().map(pergunta -> pergunta.toOutput()).collect(Collectors.toSet())
+        );
     }
 }

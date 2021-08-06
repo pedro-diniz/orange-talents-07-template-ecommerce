@@ -1,5 +1,7 @@
 package br.com.zup.desafioml.model;
 
+import br.com.zup.desafioml.controller.dto.response.OpiniaoProdutoResponse;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Objects;
@@ -57,5 +59,25 @@ public class OpiniaoProduto {
     @Override
     public int hashCode() {
         return Objects.hash(id, nota, titulo, descricao, usuario, produto);
+    }
+
+    public Integer getNota() {
+        return nota;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public OpiniaoProdutoResponse toOutput() {
+        return new OpiniaoProdutoResponse(
+                nota,
+                titulo,
+                descricao
+        );
     }
 }

@@ -1,9 +1,13 @@
 package br.com.zup.desafioml.model;
 
+import br.com.zup.desafioml.controller.dto.response.CategoriaProdutoResponse;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Categoria {
 
     @Id
@@ -32,4 +36,18 @@ public class Categoria {
         this.categoriaMae = categoriaMae;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public Categoria getCategoriaMae() {
+        return categoriaMae;
+    }
+
+    public CategoriaProdutoResponse toOutput() {
+        return new CategoriaProdutoResponse(
+                nome,
+                categoriaMae
+        );
+    }
 }

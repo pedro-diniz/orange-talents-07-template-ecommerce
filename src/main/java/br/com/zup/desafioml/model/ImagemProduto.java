@@ -1,5 +1,6 @@
 package br.com.zup.desafioml.model;
 
+import br.com.zup.desafioml.controller.dto.response.ImagemProdutoResponse;
 import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
@@ -37,5 +38,13 @@ public class ImagemProduto {
     }
 
     public ImagemProduto() {
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public ImagemProdutoResponse toOutput() {
+        return new ImagemProdutoResponse(link);
     }
 }

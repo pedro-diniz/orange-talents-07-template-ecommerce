@@ -1,5 +1,7 @@
 package br.com.zup.desafioml.model;
 
+import br.com.zup.desafioml.controller.dto.response.PerguntaProdutoResponse;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -83,4 +85,9 @@ public class PerguntaProduto {
     public Usuario getVendedor() {
         return vendedor;
     }
+
+    public PerguntaProdutoResponse toOutput() {
+        return new PerguntaProdutoResponse(titulo);
+    }
+
 }
