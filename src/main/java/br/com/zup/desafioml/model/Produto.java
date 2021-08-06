@@ -1,5 +1,7 @@
 package br.com.zup.desafioml.model;
 
+import org.springframework.security.core.Authentication;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -7,6 +9,7 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -46,6 +49,10 @@ public class Produto {
     @JoinColumn(name = "produto_id")
     private Set<ImagemProduto> imagens = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "produto_id")
+    private Set<OpiniaoProduto> opinioes = new HashSet<>();
+
     public Produto() {}
 
     public Produto(String nome, BigDecimal valor, Integer quantidade, Set<CaracteristicaProduto> caracteristicas, String descricao, Categoria categoria, Usuario dono) {
@@ -72,4 +79,13 @@ public class Produto {
         }
 
     }
+
+    public boolean usuarioLogadoEhDonoDoProduto(Authentication authentication, Produto produto) {
+        return Objects.equals(produto.getDono().getId(), ((Usuario) authentication.getPrincipal()).getId());
+    }
+
+    public void adicionaOpiniao(OpiniaoProduto opiniaoProduto) {
+        opinioes.add(opiniaoProduto);
+    }
+
 }

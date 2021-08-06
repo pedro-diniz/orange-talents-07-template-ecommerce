@@ -1,16 +1,16 @@
 package br.com.zup.desafioml.controller;
 
 import br.com.zup.desafioml.controller.dto.request.ImagensRequest;
+import br.com.zup.desafioml.controller.dto.request.OpiniaoRequest;
 import br.com.zup.desafioml.controller.dto.request.ProdutoRequest;
 import br.com.zup.desafioml.controller.util.ImageUploader;
 import br.com.zup.desafioml.model.ImagemProduto;
+import br.com.zup.desafioml.model.OpiniaoProduto;
 import br.com.zup.desafioml.model.Produto;
-import br.com.zup.desafioml.model.Usuario;
 import br.com.zup.desafioml.repository.ProdutoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -51,7 +51,7 @@ public class ProdutoController {
         if (possivelProduto.isPresent()) {
             Produto produto = possivelProduto.get();
 
-            if (produto.getDono().getId() == ((Usuario) authentication.getPrincipal()).getId()) {
+            if (produto.usuarioLogadoEhDonoDoProduto(authentication, produto)) {
 
                 Set<String> listaUrls = imageUploader.upaImagensRetornaUrls(imagensRequest);
 
@@ -65,6 +65,28 @@ public class ProdutoController {
             else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping(value="/{id}/opinioes")
+    @Transactional
+    public ResponseEntity<?> opinar(Authentication authentication, @PathVariable Long id,
+                                    @RequestBody @Valid OpiniaoRequest opiniaoRequest) {
+
+        Optional<Produto> possivelProduto = produtoRepository.findById(id);
+
+        if (possivelProduto.isPresent()) {
+            Produto produto = possivelProduto.get();
+
+            OpiniaoProduto opiniaoProduto = opiniaoRequest.toModel(authentication, id);
+            produto.adicionaOpiniao(opiniaoProduto);
+
+            produtoRepository.save(produto);
+
+            return ResponseEntity.ok().build();
+
         }
 
         return ResponseEntity.badRequest().build();
