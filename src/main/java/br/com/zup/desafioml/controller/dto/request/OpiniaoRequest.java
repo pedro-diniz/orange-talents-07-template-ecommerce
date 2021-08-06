@@ -1,6 +1,5 @@
 package br.com.zup.desafioml.controller.dto.request;
 
-import br.com.zup.desafioml.config.validation.CheckIdExistence;
 import br.com.zup.desafioml.model.OpiniaoProduto;
 import br.com.zup.desafioml.model.Produto;
 import br.com.zup.desafioml.model.Usuario;
@@ -36,13 +35,13 @@ public class OpiniaoRequest {
     public OpiniaoRequest() {
     }
 
-    public OpiniaoProduto toModel(Authentication authentication, Long idProduto) {
+    public OpiniaoProduto toModel(Authentication authentication, Produto produto) {
         return new OpiniaoProduto(
                 nota,
                 titulo,
                 descricao,
                 ((Usuario) authentication.getPrincipal()),
-                new Produto(idProduto)
+                produto
         );
     }
 }

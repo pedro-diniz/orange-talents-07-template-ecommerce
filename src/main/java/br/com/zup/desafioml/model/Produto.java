@@ -53,6 +53,10 @@ public class Produto {
     @JoinColumn(name = "produto_id")
     private Set<OpiniaoProduto> opinioes = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "produto_id")
+    private Set<PerguntaProduto> perguntas = new HashSet<>();
+
     public Produto() {}
 
     public Produto(String nome, BigDecimal valor, Integer quantidade, Set<CaracteristicaProduto> caracteristicas, String descricao, Categoria categoria, Usuario dono) {
@@ -88,4 +92,11 @@ public class Produto {
         opinioes.add(opiniaoProduto);
     }
 
+    public void adicionaPergunta(PerguntaProduto perguntaProduto) {
+        perguntas.add(perguntaProduto);
+    }
+
+    public String getNome() {
+        return nome;
+    }
 }

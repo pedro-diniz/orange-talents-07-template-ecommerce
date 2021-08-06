@@ -1,33 +1,23 @@
 package br.com.zup.desafioml.controller;
 
-import br.com.zup.desafioml.controller.dto.request.ImagensRequest;
-import br.com.zup.desafioml.controller.dto.request.OpiniaoRequest;
 import br.com.zup.desafioml.controller.dto.request.ProdutoRequest;
-import br.com.zup.desafioml.controller.util.ImageUploader;
-import br.com.zup.desafioml.model.ImagemProduto;
-import br.com.zup.desafioml.model.OpiniaoProduto;
-import br.com.zup.desafioml.model.Produto;
+import br.com.zup.desafioml.model.*;
 import br.com.zup.desafioml.repository.ProdutoRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
 
     private ProdutoRepository produtoRepository;
-    private ImageUploader imageUploader;
 
-    public ProdutoController(ProdutoRepository produtoRepository, ImageUploader imageUploader) {
+    public ProdutoController(ProdutoRepository produtoRepository) {
         this.produtoRepository = produtoRepository;
-        this.imageUploader = imageUploader;
     }
 
     @PostMapping
@@ -39,57 +29,6 @@ public class ProdutoController {
 
         return ResponseEntity.ok().build();
 
-    }
-
-    @PostMapping(value="/{id}/imagens")
-    @Transactional
-    public ResponseEntity<?> adicionarImagens(Authentication authentication,
-                                              @PathVariable Long id, @Valid ImagensRequest imagensRequest) {
-
-        Optional<Produto> possivelProduto = produtoRepository.findById(id);
-
-        if (possivelProduto.isPresent()) {
-            Produto produto = possivelProduto.get();
-
-            if (produto.usuarioLogadoEhDonoDoProduto(authentication, produto)) {
-
-                Set<String> listaUrls = imageUploader.upaImagensRetornaUrls(imagensRequest);
-
-                Set<ImagemProduto> imagensProduto = imagensRequest.toModel(listaUrls, id);
-
-                produto.adicionaImagens(imagensProduto);
-                produtoRepository.save(produto);
-
-                return ResponseEntity.ok().build();
-            }
-            else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
-        }
-
-        return ResponseEntity.badRequest().build();
-    }
-
-    @PostMapping(value="/{id}/opinioes")
-    @Transactional
-    public ResponseEntity<?> opinar(Authentication authentication, @PathVariable Long id,
-                                    @RequestBody @Valid OpiniaoRequest opiniaoRequest) {
-
-        Optional<Produto> possivelProduto = produtoRepository.findById(id);
-
-        if (possivelProduto.isPresent()) {
-            Produto produto = possivelProduto.get();
-
-            OpiniaoProduto opiniaoProduto = opiniaoRequest.toModel(authentication, id);
-            produto.adicionaOpiniao(opiniaoProduto);
-
-            produtoRepository.save(produto);
-
-            return ResponseEntity.ok().build();
-
-        }
-
-        return ResponseEntity.badRequest().build();
     }
 
 }
