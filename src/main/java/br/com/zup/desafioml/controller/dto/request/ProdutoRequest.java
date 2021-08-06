@@ -4,6 +4,8 @@ import br.com.zup.desafioml.config.validation.CheckIdExistence;
 import br.com.zup.desafioml.model.CaracteristicaProduto;
 import br.com.zup.desafioml.model.Categoria;
 import br.com.zup.desafioml.model.Produto;
+import br.com.zup.desafioml.model.Usuario;
+import org.springframework.security.core.Authentication;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
@@ -35,14 +37,15 @@ public class ProdutoRequest {
     @CheckIdExistence(domainClass = Categoria.class, fieldName = "id")
     private Long idCategoria;
 
-    public Produto toModel() {
+    public Produto toModel(Authentication authentication) {
         return new Produto(
                 nome,
                 valor,
                 quantidade,
                 criaConjuntoCaracteristicas(),
                 descricao,
-                new Categoria(idCategoria)
+                new Categoria(idCategoria),
+                (Usuario) authentication.getPrincipal()
         );
     }
 
