@@ -1,5 +1,6 @@
 package br.com.zup.desafioml.controller;
 
+import br.com.zup.desafioml.config.exception.NegocioException;
 import br.com.zup.desafioml.controller.dto.request.ProdutoRequest;
 import br.com.zup.desafioml.model.*;
 import br.com.zup.desafioml.repository.ProdutoRepository;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/produtos")
@@ -35,14 +35,10 @@ public class ProdutoController {
     @GetMapping("/{id}")
     public ResponseEntity<?> detalhar(@PathVariable Long id) {
 
-        Optional<Produto> produto = produtoRepository.findById(id);
+        Produto produto = produtoRepository.findById(id).orElseThrow(
+                () -> new NegocioException("Produto não encontrado."));
 
-        if (produto.isPresent()) {
-            return ResponseEntity.ok(produto.get().toOutput());
-        }
-        else {
-            return ResponseEntity.notFound().build();
-        }
+            return ResponseEntity.ok(produto.toOutput());
 
     }
 

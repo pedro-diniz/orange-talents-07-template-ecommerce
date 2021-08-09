@@ -21,7 +21,7 @@ import java.util.Optional;
 public class AddPerguntaProdutoController {
 
     private ProdutoRepository produtoRepository;
-    private EmailSender emailSender;
+    private FakeEmailSender emailSender;
 
     public AddPerguntaProdutoController(ProdutoRepository produtoRepository, FakeEmailSender emailSender) {
         this.produtoRepository = produtoRepository;

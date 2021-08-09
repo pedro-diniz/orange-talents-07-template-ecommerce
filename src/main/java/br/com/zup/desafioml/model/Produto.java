@@ -147,4 +147,11 @@ public class Produto {
                 perguntas.stream().map(pergunta -> pergunta.toOutput()).collect(Collectors.toSet())
         );
     }
+
+    public void abateEstoque(Integer qtdCompra) {
+        if (qtdCompra <= quantidade) {
+            quantidade -= qtdCompra;
+            System.out.println(quantidade);
+        }
+    }
 }
