@@ -1,7 +1,5 @@
 package br.com.zup.desafioml.config.validation;
 
-import br.com.zup.desafioml.config.exception.NegocioException;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.List;
@@ -30,7 +28,8 @@ public class ValueOfEnumValidator implements ConstraintValidator<ValueOfEnum, Ob
 
             return acceptedValues.contains(inputTratado);
         }
-        throw new NegocioException("É necessário informar um gateway de pagamento!");
+
+        return false;
 
     }
 }

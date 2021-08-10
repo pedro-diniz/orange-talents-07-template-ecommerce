@@ -48,6 +48,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/usuarios").permitAll() // libera POST em /usuarios
                 .antMatchers(HttpMethod.POST, "/categorias").permitAll() // libera POST em /categorias
                 .antMatchers(HttpMethod.POST, "/auth").permitAll() // libera POST em /auth
+                .antMatchers(HttpMethod.POST, "/notas-fiscais").permitAll() // libera POST em /notas-fiscais
+                .antMatchers(HttpMethod.POST, "/ranking-vendedores").permitAll() // libera POST em /ranking-vendedores
                 .antMatchers(HttpMethod.GET, "/produtos/**").permitAll() // libera POST em /auth
                 .anyRequest().authenticated() // requer autenticação nos demais endpoints
                 .and().csrf().disable() // precisa ser desabilitado para acesso sem autenticação

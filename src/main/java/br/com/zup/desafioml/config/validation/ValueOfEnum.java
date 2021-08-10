@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 public @interface ValueOfEnum {
     Class<? extends Enum<?>> enumClass();
 
-    String message() default "deve ser um gateway válido.";
+    String message() default "não corresponde a uma opção válida.";
 
     Class<?>[] groups() default {};
 

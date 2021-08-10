@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -33,7 +34,8 @@ public class CompraController {
     }
 
     @PostMapping(value="/produtos/{id}/compras")
-    public ResponseEntity<?> comprar(Authentication authentication, @PathVariable Long id,
+    public ResponseEntity<?> comprar(Authentication authentication, UriComponentsBuilder uriComponentsBuilder,
+                                     @PathVariable Long id,
                                      @RequestBody @Valid CompraRequest compraRequest) {
 
         Produto produto = produtoRepository.findById(id).orElseThrow(
@@ -51,9 +53,7 @@ public class CompraController {
             compraRepository.save(compra);
 
             return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(
-                    compraRequest.getGateway().trim().toLowerCase() + ".com?buyerId=" + compra.getId() +
-                            "&redirectUrl=localhost:8080/produtos/" + id + "/compras"
-            )).build();
+                    compra.geraUrlRetorno(uriComponentsBuilder))).build();
 
         } else {
             throw new NegocioException("Quantidade do produto em estoque: " + produto.getQuantidade() +

@@ -43,8 +43,8 @@ public class UniqueValueValidator implements ConstraintValidator<UniqueValue, Ob
         List<?> list = query.getResultList();
 
         // mensagem de exceção para a condição de a lista ter mais de um registro
-        Assert.state(list.size() <= 1, "Foi encontrado mais de um " + klass + " com o atributo" +
-                domainAttribute + " = :value");
+        Assert.state(list.size() <= 1, "Foi encontrado mais de um " + klass.getName() +
+                " com o atributo " + domainAttribute + " = :value");
 
         // retorno do booleano se a lista está vazia ou não, validando a requisição
         return list.isEmpty();
